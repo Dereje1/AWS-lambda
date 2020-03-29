@@ -5,6 +5,13 @@ const inputSquare = document.getElementById('inputsquare');
 const submitSquare = document.getElementById('submitsquare')
 
 let messageMemory = {};
+let connection =''
+
+if (location.hostname === "localhost" || location.hostname === "127.0.0.1"){
+    connection = `http://localhost:3000/dev/`
+} else{
+    connection = `https://bu3hggjpnl.execute-api.us-east-1.amazonaws.com/dev/`
+}
 
 const display = () => {
     const {description, timeStamp, query, result} = messageMemory
@@ -20,7 +27,7 @@ const display = () => {
         inputSquare.value=null
     }else{
         querySpan.innerHTML =`Lambda passed the squared value of ${query}`
-        querySpan.style.background ='green'
+        querySpan.style.background ='purple'
         inputSquare.parentNode.removeChild(inputSquare);
         submitSquare.parentNode.removeChild(submitSquare);
         const newButton = document.createElement("button")
@@ -41,7 +48,7 @@ const postLambda = async () => {
         },
         body: JSON.stringify(messageMemory)
     };
-    const endpoint = `http://localhost:3000/dev/${inputSquare.value}`
+    const endpoint = `${connection}${inputSquare.value}`
     try {
         
     const fetchResponse = await fetch(endpoint,settings)
@@ -55,7 +62,7 @@ const postLambda = async () => {
 
 const getLambda = async () => {
     try {
-    const response = await fetch('http://localhost:3000/dev/');
+    const response = await fetch(connection);
     const {message} = await response.json();
     messageMemory = {...message, ...messageMemory}
     display()
