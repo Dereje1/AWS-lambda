@@ -1,0 +1,41 @@
+body{
+    margin:0;
+  }
+#root{
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.blockstyle{
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    width: 400px;
+    padding: 15px;
+    background: rgb(136, 136, 131);
+    color: white;
+    font-size: large;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: bold;
+}
+
+#interact{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.submit{
+    margin-top: 10px;
+    width: 150px;
+    height: 50px;
+    font-size: 20px;
+    cursor: pointer;
+    text-align: center;
+}

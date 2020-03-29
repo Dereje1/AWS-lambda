@@ -1,0 +1,19 @@
+{
+  "name": "my-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "start": "nodemon --exec \"sls offline start\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.646.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2",
+    "serverless-offline": "^6.1.2"
+  }
+}
