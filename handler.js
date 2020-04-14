@@ -1,4 +1,6 @@
 'use strict';
+//require('dotenv').config()
+const DAO = require('./DAO');
 
 const responseUtil = (message, statusCode) => (
   {
@@ -18,23 +20,31 @@ const responseUtil = (message, statusCode) => (
 )
 
 const get = async (event) =>{
+
+  const {Items} =  await DAO.getDynamoByQuery({name:event.pathParameters.val})
+
   const message ={
     description: 'GET lambda Ok!',
     timeStamp: Date.now(),
-    query: Math.round(Math.random() * 100)
+    query: Items.length ? Items[0].question : Math.round(Math.random() * 100),
+    attempts: Items.length ? Items[0].attempts : 0
   }
   return responseUtil(message, 200) ;
 }
 
 const post = async (event) => {
   const ans = Number(event.pathParameters.val)
-  const question = JSON.parse(event.body).query
-
+  const {query, name} = JSON.parse(event.body)
+  const stored = await DAO.postDynamo({query, name, ans})
+  const latestQuery = stored || query
+  console.log(stored)
   const message = {
     description: 'POST lambda Ok!',
     timeStamp: Date.now(),
-    query: question,
-    result: ans === Number(question) * Number(question)
+    query: latestQuery,
+    result: ans === Number(latestQuery) * Number(latestQuery),
+    ans,
+    stored
   }
   return responseUtil(message, 200) ;
 }

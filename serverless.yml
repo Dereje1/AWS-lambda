@@ -15,12 +15,14 @@ service: my-service
 provider:
   name: aws
   runtime: nodejs12.x
+  environment:
+    DYNAMODB_TABLE: Squared
 functions:
   get:
     handler: handler.get
     events:
       - http:
-          path: /
+          path: /{val}
           method: get
           cors: true
   post:
@@ -32,3 +34,22 @@ functions:
           cors: true
 plugins:
   - serverless-offline  
+resources:
+  Resources:
+    SquaredDynamoDbTable: 
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: lastpost
+            AttributeType: N
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+          - AttributeName: lastpost
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:provider.environment.DYNAMODB_TABLE}
